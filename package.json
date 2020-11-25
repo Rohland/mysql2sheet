@@ -1,0 +1,27 @@
+{
+  "name": "mysql2sheet",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/codeo-za/mysql2sheet.git"
+  },
+  "author": "rohland@codeo.co.za",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/codeo-za/mysql2sheet/issues"
+  },
+  "homepage": "https://github.com/codeo-za/mysql2sheet#readme",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "googleapis": "^65.0.0",
+    "knex": "^0.21.12",
+    "mysql": "^2.18.1",
+    "yargs": "^16.1.1"
+  }
+}

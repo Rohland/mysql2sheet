@@ -1,0 +1,14 @@
+logs
+*.log
+npm-debug.log*
+node_modules/
+.vscode
+!.vscode/tasks.js
+.idea/
+.npm
+.eslintcache
+.DS_Store
+*.swp
+*.swo
+*.env
+*.env.*
