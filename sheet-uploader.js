@@ -1,5 +1,4 @@
 const {google} = require('googleapis');
-
 const authTokens = {};
 
 function getGoogleAuth(
