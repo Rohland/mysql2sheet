@@ -1,10 +1,9 @@
-require('dotenv').config();
 const yargs = require('yargs/yargs');
 const {uploadDataToGoogleSheets} = require("./sheet-uploader");
 const {hideBin} = require('yargs/helpers')
 const argv = yargs(hideBin(process.argv)).argv
 const {getConfig} = require('./config-provider');
-const {executeQueries} = require('./query-service');
+const {executeTasks} = require('./mysql-service');
 
 const configPath = argv.path;
 if (!configPath) {
@@ -15,8 +14,8 @@ if (!configPath) {
 (async () => {
     try {
         const config = await getConfig(configPath);
-        const dataToUpload = await executeQueries(config.rules);
-        await uploadDataToGoogleSheets(config.rules);
+        await executeTasks(config);
+        await uploadDataToGoogleSheets(config);
     }
     catch (err) {
         console.error(`unexpected error executing mysql2sheets`, err);

@@ -2,16 +2,17 @@ const {google} = require('googleapis');
 
 const authTokens = {};
 
-function getGoogleAuth(name) {
+function getGoogleAuth(
+    name,
+    credentials) {
     const cachedAuthToken = authTokens[name];
     if (cachedAuthToken) {
         return cachedAuthToken;
     }
-    const credentialJson = process.env[`google_credential_${name}`];
-    if (!credentialJson) {
+    const credential = credentials[name];
+    if (!credential) {
         throw new Error(`could not find google credential with name '${name}`);
     }
-    const credential = JSON.parse(credentialJson);
     const auth = new google.auth.JWT(
         credential.client_email,
         null,
@@ -25,10 +26,10 @@ function getGoogleAuth(name) {
     return auth;
 }
 
-function getResultType(rule) {
-    const resultType = rule.type;
+function getResultType(task) {
+    const resultType = task.type;
     if (!resultType) {
-        throw new Error(`no result type was set for rule with name '${rule.name}'`);
+        throw new Error(`no result type was set for rule with name '${task.name}'`);
     }
     const type = resultType.trim().toLocaleLowerCase();
     if (
@@ -36,13 +37,13 @@ function getResultType(rule) {
         || type === 'table') {
         return type;
     }
-    throw new Error(`unknown result type '${type}' for rule with name '${rule.name}'`);
+    throw new Error(`unknown result type '${type}' for rule with name '${task.name}'`);
 }
 
-function getResultValues(rule) {
-    const type = getResultType(rule);
+function getResultValues(task) {
+    const type = getResultType(task);
     const result = {
-        values: rule.result
+        values: task.result
     }
     if (type === 'scalar') {
         return result;
@@ -50,16 +51,16 @@ function getResultValues(rule) {
         result.majorDimension = "ROWS";
         return result;
     }
-    throw new Error(`unknown result type '${type}' for rule with name '${rule.name}'`);
+    throw new Error(`unknown result type '${type}' for rule with name '${task.name}'`);
 }
 
 async function clearRange(
-    rule,
+    task,
     sheets) {
     return new Promise((resolve, reject) => {
         const payload = {
-            spreadsheetId: rule.googleSheetId,
-            range: rule.googleSheetRange,
+            spreadsheetId: task.googleSheetId,
+            range: task.googleSheetRange,
         };
         sheets.spreadsheets.values.clear(
             payload,
@@ -73,24 +74,28 @@ async function clearRange(
     });
 }
 
-async function uploadDataForRule(rule) {
-    const auth = getGoogleAuth(rule.googleCredential);
+async function uploadDataForRule(
+    task,
+    credentials) {
+    const auth = getGoogleAuth(
+        task.googleCredential,
+        credentials);
     const sheets = google.sheets({
         version: 'v4',
         auth: auth
     });
-    console.log(`sheets: uploading for rule ${rule.name}`);
-    if (rule.clearRange) {
+    console.log(`sheets: uploading for rule ${task.name}`);
+    if (task.clearRange) {
         await clearRange(
-            rule,
+            task,
             sheets);
     }
-    const resource = getResultValues(rule);
+    const resource = getResultValues(task);
     return new Promise((resolve, reject) => {
         const payload = {
-            spreadsheetId: rule.googleSheetId,
+            spreadsheetId: task.googleSheetId,
             valueInputOption: "USER_ENTERED",
-            range: rule.googleSheetRange,
+            range: task.googleSheetRange,
             resource: resource
         };
         sheets.spreadsheets.values.update(
@@ -105,8 +110,10 @@ async function uploadDataForRule(rule) {
     });
 }
 
-async function uploadDataToGoogleSheets(rules) {
-    await Promise.all(rules.map(x => uploadDataForRule(x)));
+async function uploadDataToGoogleSheets(config) {
+    await Promise.all(config.tasks.map(task => uploadDataForRule(
+        task,
+        config.settings.google)));
 }
 
 module.exports = {
