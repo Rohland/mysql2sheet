@@ -1,6 +1,6 @@
 {
   "name": "mysql2sheet",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Does what it says on the tin. Takes data in your MySql database and uploads it to a Google Sheet.",
   "main": "index.js",
   "bin": {
