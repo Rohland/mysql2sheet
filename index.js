@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 const yargs = require('yargs/yargs');
 const {uploadDataToGoogleSheets} = require("./sheet-uploader");
 const {hideBin} = require('yargs/helpers')
