@@ -1,7 +1,7 @@
 {
   "name": "mysql2sheet",
   "version": "1.0.0",
-  "description": "",
+  "description": "Does what it says on the tin. Takes data in your MySql database and uploads it to a Google Sheet.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -9,14 +9,25 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/codeo-za/mysql2sheet.git"
+    "url": "git+https://github.com/rohland/mysql2sheet.git"
   },
-  "author": "rohland@codeo.co.za",
-  "license": "ISC",
+  "keywords": [
+    "mysql",
+    "google",
+    "google sheets",
+    "sync",
+    "upload"
+  ],
+  "author": {
+    "name": "Rohland de Charmoy",
+    "email": "rohland.decharmoy@gmail.com",
+    "url": "https://github.com/rohland"
+  },
+  "license": "BSD-3-Clause",
   "bugs": {
-    "url": "https://github.com/codeo-za/mysql2sheet/issues"
+    "url": "https://github.com/rohland/mysql2sheet"
   },
-  "homepage": "https://github.com/codeo-za/mysql2sheet#readme",
+  "homepage": "https://github.com/rohland/mysql2sheet#readme",
   "dependencies": {
     "googleapis": "^65.0.0",
     "knex": "^0.21.12",

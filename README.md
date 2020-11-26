@@ -31,7 +31,8 @@ Your task definition file defines one or more tasks to execute. Each task has th
 * connection - the name of the mysql connection to use
 * schema - the schema to execute your query against
 * sql - the sql query to execute and retrieve results
-* mapData - function to map sql results to what needs to be uploaded to your sheet - go wild
+* mapData - function to map sql results to what needs to be uploaded to your sheet, note that the last result in your
+ sql query is mapped here - go wild :)
 * type - result type, either scalar (single value) or table 
 * googleCredential - the name of the Google Credential to use
 * googleSheetId - the sheet identifier to use (you can get this from the Sheet URL) 

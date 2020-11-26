@@ -48,8 +48,10 @@ async function executeTask(
     const schema = task.schema;
     const sql = `use ${schema}; ${task.sql}`;
     const data = await conn.raw(sql);
-    const rows = data[0][1];
-    task.result = rows.map(x => task.mapData(x));
+    const resultSets = data[0];
+    const lastResultSet = resultSets.length - 1;
+    const rows = data[0][lastResultSet];
+    task.result = await Promise.all(rows.map(x => task.mapData(x)));
 }
 
 async function executeTasks(config) {
