@@ -9,7 +9,7 @@ Multiple MySql servers? No problem. Multiple sheets? No problem.
 #### npx
 
 ```shell script
-npx mysql2sheet -- --path=./your_config.js
+npx mysql2sheet --path=./your_config.js
 ```
 
 #### Local
