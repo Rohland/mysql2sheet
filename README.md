@@ -15,7 +15,8 @@ npx mysql2sheet --path=./your_config.js
 #### Local
 
 ```shell script
-npm start -- --path=./your_config.js 
+npm install mysql2sheet
+mysql2sheet --path=./your_config.js 
 ```
 
 ### Path

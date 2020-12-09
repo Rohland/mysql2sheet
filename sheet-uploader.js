@@ -53,9 +53,36 @@ function getResultValues(task) {
     throw new Error(`unknown result type '${type}' for rule with name '${task.name}'`);
 }
 
+async function getRange(
+    task,
+    sheets){
+    return new Promise((resolve, reject) => {
+        const payload = {
+            spreadsheetId: task.googleSheetId,
+            range: task.googleSheetRange,
+        };
+        sheets.spreadsheets.values.get(
+            payload,
+            (error, response) => {
+                if (error) {
+                    reject(error);
+                    return;
+                }
+                resolve(response.data.values);
+            });
+    });
+}
+
 async function clearRange(
     task,
     sheets) {
+    const currentData = await getRange(
+        task,
+        sheets);
+    if (currentData.length < task.result.length) {
+        // no point clearing, the incoming dataset is larger
+        return;
+    }
     return new Promise((resolve, reject) => {
         const payload = {
             spreadsheetId: task.googleSheetId,
