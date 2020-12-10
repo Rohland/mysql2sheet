@@ -79,8 +79,11 @@ async function clearRange(
     const currentData = await getRange(
         task,
         sheets);
-    if (currentData.length <= task.result.length) {
-        // no point clearing, the incoming dataset is larger
+    const isNewDataSetLarger = !currentData
+        || task.result.length >= currentData.length;
+
+    if (isNewDataSetLarger) {
+        // no point clearing
         return;
     }
     return new Promise((resolve, reject) => {
