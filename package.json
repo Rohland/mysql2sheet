@@ -37,7 +37,7 @@
   "homepage": "https://github.com/rohland/mysql2sheet#readme",
   "dependencies": {
     "googleapis": "^65.0.0",
-    "knex": "^0.21.12",
+    "knex": "^2.4.0",
     "mysql": "^2.18.1",
     "yargs": "^16.1.1"
   }
