@@ -28,7 +28,7 @@ function getKnexConnection(
         settings,
         name);
     const knex = Knex({
-        client: "mysql",
+        client: "mysql2",
         asyncStackTraces: process.env.NODE_ENV !== "production",
         connection: {
             ...config,

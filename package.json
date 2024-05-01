@@ -1,6 +1,6 @@
 {
   "name": "mysql2sheet",
-  "version": "1.0.6",
+  "version": "1.1.0",
   "description": "Does what it says on the tin. Takes data in your MySql database and uploads it to a Google Sheet.",
   "main": "index.js",
   "bin": {
@@ -32,13 +32,13 @@
     "url": "https://github.com/rohland/mysql2sheet"
   },
   "engines": {
-    "node": ">=10"
+    "node": ">=18"
   },
   "homepage": "https://github.com/rohland/mysql2sheet#readme",
   "dependencies": {
-    "googleapis": "^65.0.0",
-    "knex": "^0.21.12",
-    "mysql": "^2.18.1",
-    "yargs": "^16.1.1"
+    "googleapis": "^135.0.0",
+    "knex": "^3.1.0",
+    "mysql2": "^3.9.7",
+    "yargs": "^17.7.2"
   }
 }
