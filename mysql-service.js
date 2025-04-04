@@ -7,14 +7,17 @@ function getConnection(
     if (!settings.mysql) {
         throw new Error(`expected mysql to be defined on settings object but wasn't`);
     }
-    const config = settings.mysql[name];
-    if (config.host
-        && config.user
-        && config.password
-        && config.port) {
+    const config = settings.mysql[name] ?? {};
+    const keys = ["host", "user", "password", "port"];
+    keys.forEach(key => {
+        config[key] = config[key] ?? process.env[`${name}_mysql_${key}`];
+    });
+    const missingKeys = keys.filter(key => !config[key]);
+    if (missingKeys.length === 0) {
         return config;
     }
-    throw new Error(`One or more mysql settings are missing for connection named '${name}'`);
+    console.error(`missing keys for mysql connection '${name}': ${missingKeys.join(", ")}`);
+    process.exit(-1);
 }
 
 function getKnexConnection(

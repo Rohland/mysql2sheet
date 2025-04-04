@@ -70,20 +70,22 @@ const tasks = [
 ];
 
 module.exports = {
-    tasks: tasks,
+    tasks: tasks
     settings: {
         mysql: {
             prodtime: {
                 host: "localhost",
                 user: "root",
-                password: "root",
-                port: "3306"
+                port: "3306",
+                // for secrets, rely on environment variables (see Settings)
             }
         },
         google: {
             gcred: {
                 "type": "service_account",
                 // ...
+                // for secrets, rely on environment variables for each key, or rather set an env var with the credential 
+                // json, see Settings below
             }
         }
     }
@@ -91,9 +93,20 @@ module.exports = {
 
 ```
 
-#### MySql Connections and Google Credential Settings
 
-Note how in the above example, `connection` and `googleCredential` refer to keys defined in the `settings` object.
+## Settings
+
+The configuration settings for MySql + Google Sheets API are pulled from the environment, using conventions. Environment
+variables are also loaded from any local `.env` file relative to location application is launched from.
+
+With a named MySql connection, it will look for:
+
+- host: `{name}_mysql_host`
+- user: `{name}_mysql_user`
+- password: `{name}_mysql_password`
+- port: `{name}_mysql_port`
+
+With a named Google Sheet credential, it will expect an environment variable called `{name}_google` which contains the credential JSON. Alternatively, set individual keys using `{name}_google_{property}`. 
 
 To set up your Google Credentials, see https://www.npmjs.com/package/googleapis#service-account-credentials
 Note: Make sure you share the sheet (with Editor rights) with the email address noted in the `client_email` param of the service account JSON.

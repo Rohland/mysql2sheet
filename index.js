@@ -1,10 +1,13 @@
 #!/usr/bin/env node
+const dotenv = require('dotenv');
 const yargs = require('yargs/yargs');
 const {uploadDataToGoogleSheets} = require("./sheet-uploader");
 const {hideBin} = require('yargs/helpers')
 const argv = yargs(hideBin(process.argv)).argv
 const {getConfig} = require('./config-provider');
 const {executeTasks} = require('./mysql-service');
+
+dotenv.config();
 
 const configPath = argv.path;
 if (!configPath) {
