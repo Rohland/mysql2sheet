@@ -7,7 +7,11 @@ function getConnection(
     if (!settings.mysql) {
         throw new Error(`expected mysql to be defined on settings object but wasn't`);
     }
-    const config = settings.mysql[name];
+    const config = settings.mysql[name] ?? {};
+    const keys = ["host", "user", "password", "port"];
+    keys.forEach(key => {
+        config[key] = config[key] ?? process.env[`${name}_mysql_${key}`];
+    });
     if (config.host
         && config.user
         && config.password

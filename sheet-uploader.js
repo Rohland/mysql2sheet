@@ -8,10 +8,7 @@ function getGoogleAuth(
     if (cachedAuthToken) {
         return cachedAuthToken;
     }
-    const credential = credentials[name];
-    if (!credential) {
-        throw new Error(`could not find google credential with name '${name}`);
-    }
+    const credential = getGoogleCredentials(name, credentials);
     const auth = new google.auth.JWT(
         credential.client_email,
         null,
@@ -23,6 +20,38 @@ function getGoogleAuth(
     );
     authTokens[name] = auth;
     return auth;
+}
+
+function getGoogleCredentials(name, credentials) {
+    try {
+        let credential = (credentials ?? {})[name];
+        if (credential) {
+            const keys = [
+                "type",
+                "project_id",
+                "private_key_id",
+                "private_key",
+                "client_email",
+                "client_id",
+                "auth_uri",
+                "token_uri",
+                "auth_provider_x509_cert_url",
+                "client_x509_cert_url"];
+            keys.forEach(key => {
+                credential[key] = credential[key] ?? process.env[`${name}_google_${key}`];
+            });       
+        } else {
+            credential = process.env[`${name}_google`] 
+            ? JSON.parse(process.env[`${name}_google`])
+            : null;
+        }
+        if (!credential) {
+            throw new Error(`could not find google credential with name '${name}`);
+        }
+        return credential;
+    } catch (err) {
+        throw new Error(`could not parse google credential with name '${name}'`, { cause: err});
+    }
 }
 
 function getResultType(task) {
