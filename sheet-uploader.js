@@ -46,11 +46,13 @@ function getGoogleCredentials(name, credentials) {
             : null;
         }
         if (!credential) {
-            throw new Error(`could not find google credential with name '${name}`);
+            console.error(`missing env keys for google credential '${name}'`);
+            process.exit(-1);
         }
         return credential;
     } catch (err) {
-        throw new Error(`could not parse google credential with name '${name}'`, { cause: err});
+        console.error(`could not parse google credential with name '${name}'`, err);
+        process.exit(-1);
     }
 }
 

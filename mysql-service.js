@@ -12,13 +12,12 @@ function getConnection(
     keys.forEach(key => {
         config[key] = config[key] ?? process.env[`${name}_mysql_${key}`];
     });
-    if (config.host
-        && config.user
-        && config.password
-        && config.port) {
+    const missingKeys = keys.filter(key => !config[key]);
+    if (missingKeys.length === 0) {
         return config;
     }
-    throw new Error(`One or more mysql settings are missing for connection named '${name}'`);
+    console.error(`missing keys for mysql connection '${name}': ${missingKeys.join(", ")}`);
+    process.exit(-1);
 }
 
 function getKnexConnection(
